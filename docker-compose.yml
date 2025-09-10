@@ -8,3 +8,28 @@ services:
       - "./scripts/work:/home/jovyan/work"
     ports:
       - "8888:8888"
+  postgres:
+    image: postgres:15
+    container_name: postgres-local
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver-local
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Password123!"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserverdata:/var/opt/mssql
+
+volumes:
+  pgdata:
+  sqlserverdata:

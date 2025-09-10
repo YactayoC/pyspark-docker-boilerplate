@@ -68,7 +68,13 @@ Resultado esperado:
    +------+
 ```
 ---
+## 🗄️ Conexión a Bases de Datos (Postgres / SQL Server)
+### 🔹 Ejemplo: Conexión a SQL Server
+![CONEXION SQL SERVER](https://i.imgur.com/gGlIctq.png)
 
+### 🔹 Ejemplo: Conexión a PostgreSQL
+![CONEXION POSTGRESQL](https://i.imgur.com/l0uDPIU.png)
+---
 ## 🛑 Detener el entorno
 
 Para detener los contenedores:
