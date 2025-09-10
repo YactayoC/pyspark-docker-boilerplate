@@ -38,8 +38,7 @@ Ideal como base para desarrollar y probar código de **Big Data** con Python.
    Ejemplo de salida:
    URL: http://127.0.0.1:8888/lab?token=33969378520ae1a4d323fba9917c9565271f1a9c3a2c33f4
 ```
-2. Abrir JupyterLab en el navegador:
-   Creamos un nuevo archivo `.ipynb` y en la parte derecha posterior nos dara la opcion de seleccionar el kernel **Python 3 (ipykernel)**
+2. Creamos un nuevo archivo `.ipynb` y en la parte derecha posterior nos dara la opcion de seleccionar el kernel **Python 3 (ipykernel)**
 3. Seleccionamos la opcion `Servidor de Jupyter existente` y pegamos la URL obtenida.
 ---
 
