@@ -1,0 +1,45 @@
+services:
+  pyspark-service:
+    container_name: pyspark-local
+    image: jupyter/pyspark-notebook:latest
+    platform: linux/amd64
+    volumes:
+    - ./scripts/sparkdata:/sparkdata
+    - ./scripts/work:/home/jovyan/work
+    ports:
+    - 8888:8888
+  oracle:
+    image: gvenzl/oracle-free:latest
+    container_name: oracle-local
+    environment:
+      ORACLE_PASSWORD: initops2025!
+      APP_USER: my_user
+      APP_USER_PASSWORD: initops2025!
+    ports:
+    - 1521:1521
+    - 5500:5500
+    command: "bash -c \" echo '\xF0\u0178\u201D\xA7 Creando init.sql temporal...';\
+      \ mkdir -p /container-entrypoint-initdb.d; echo \\\"GRANT CONNECT, RESOURCE,\
+      \ CREATE VIEW, CREATE SYNONYM, CREATE SEQUENCE, CREATE TRIGGER TO my_user;\\\
+      \" > /container-entrypoint-initdb.d/init_temp.sql; echo \\\"ALTER USER my_user\
+      \ QUOTA UNLIMITED ON USERS;\\\" >> /container-entrypoint-initdb.d/init_temp.sql;\
+      \ echo '\xE2\u0153\u2026 init_temp.sql creado, iniciando Oracle...'; exec /bin/bash\
+      \ /opt/oracle/runOracle.sh; echo '\xF0\u0178\xA7\xB9 Eliminando init_temp.sql...';\
+      \ rm -f /container-entrypoint-initdb.d/init_temp.sql; \"\n"
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - healthcheck.sh
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+      start_interval: 5s
+    volumes:
+    - oradata:/opt/oracle/oradata
+    - my-init.sql:/container-entrypoint-initdb.d/my-init.sql:ro
+volumes:
+  pgdata:
+  sqlserverdata:
+  mysqldata:
+  oradata:
