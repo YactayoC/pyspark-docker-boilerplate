@@ -8,12 +8,13 @@ services:
       - "./scripts/work:/home/jovyan/work"
     ports:
       - "8888:8888"
+
   postgres:
     image: postgres:15
     container_name: postgres-local
     environment:
       POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: initops2025!
     ports:
       - "5432:5432"
     volumes:
@@ -24,12 +25,56 @@ services:
     container_name: sqlserver-local
     environment:
       ACCEPT_EULA: "Y"
-      SA_PASSWORD: "Password123!"
+      SA_PASSWORD: "initops2025!"
     ports:
       - "1433:1433"
     volumes:
       - sqlserverdata:/var/opt/mssql
 
+  mysql:
+    image: mysql:8
+    container_name: mysql-local
+    environment:
+      MYSQL_ROOT_PASSWORD: initops2025!
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: initops2025!
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysqldata:/var/lib/mysql
+
+  oracle:
+    image: gvenzl/oracle-free:latest
+    container_name: oracle-local
+    environment:
+      ORACLE_PASSWORD: initops2025!
+      APP_USER: my_user
+      APP_USER_PASSWORD: initops2025!
+    ports:
+      - "1521:1521"
+      - "5500:5500"
+    volumes:
+      - oradata:/opt/oracle/oradata
+    command: >
+      bash -c "
+      echo '🔧 Creando init.sql temporal...';
+      mkdir -p /container-entrypoint-initdb.d;
+      echo \"GRANT CONNECT, RESOURCE, CREATE VIEW, CREATE SYNONYM, CREATE SEQUENCE, CREATE TRIGGER TO my_user;\" > /container-entrypoint-initdb.d/init_temp.sql;
+      echo \"ALTER USER my_user QUOTA UNLIMITED ON USERS;\" >> /container-entrypoint-initdb.d/init_temp.sql;
+      echo '✅ init_temp.sql creado, iniciando Oracle...';
+      exec /bin/bash /opt/oracle/runOracle.sh;
+      echo '🧹 Eliminando init_temp.sql...';
+      rm -f /container-entrypoint-initdb.d/init_temp.sql;
+      "
+    healthcheck:
+      test: ["CMD-SHELL", "healthcheck.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
 volumes:
   pgdata:
   sqlserverdata:
+  mysqldata:
+  oradata:

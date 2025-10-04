@@ -1,17 +1,17 @@
-# 🚀 PySpark + Docker + JupyterLab
+# 🚀 PySpark + Docker + JupyterLab + Bases de Datos
 
 Este proyecto proporciona una configuración inicial para ejecutar **PySpark** en un entorno de **Docker**, accediendo a través de **JupyterLab**.
-Ideal como base para desarrollar y probar código de **Big Data** con Python.
+Además, se incluyen contenedores de **PostgreSQL, SQL Server, MySQL y Oracle Free**, ideales para pruebas de conexión y desarrollo de proyectos de Big Data.
 
 ---
 
 ## 📑 Índice
-- [🚀 PySpark + Docker + JupyterLab](#-pyspark--docker--jupyterlab)
+- [🚀 PySpark + Docker + JupyterLab + Bases de Datos](#-pyspark--docker--jupyterlab--bases-de-datos)
   - [📑 Índice](#-índice)
   - [📦 Requisitos previos](#-requisitos-previos)
   - [⚙️ Levantar el entorno](#️-levantar-el-entorno)
   - [🔑 Acceso a JupyterLab](#-acceso-a-jupyterlab)
-  - [🗄️ Conexión a Bases de Datos (Postgres / SQL Server)](#️-conexión-a-bases-de-datos-postgres--sql-server)
+  - [🗄️ Conexión a Bases de Datos (Postgres / SQL Server / MySQL / Oracle)](#️-conexión-a-bases-de-datos-postgres--sql-server--mysql--oracle)
     - [🔹 Ejemplo: Conexión a SQL Server](#-ejemplo-conexión-a-sql-server)
     - [🔹 Ejemplo: Conexión a PostgreSQL](#-ejemplo-conexión-a-postgresql)
   - [🛑 Detener el entorno](#-detener-el-entorno)
@@ -35,7 +35,7 @@ Asegúrate de tener instalados:
    docker compose up -d --build
    ```
 
-2. Verificar que el contenedor esté corriendo:
+2. Verificar que los contenedores estén corriendo:
    ```bash
    docker ps
    ```
@@ -61,27 +61,41 @@ Asegúrate de tener instalados:
    - Pegar la URL obtenida
    - Seleccionar `Python 3 (ipykernel)`
 
-   ✅ Ahora tu Notebook estará listo para usar PySpark, se ha dejado un archivo de prueba llamado `pyspark_test.ipynb` para que puedas verificar que todo funciona correctamente.
+   ✅ Ahora tu Notebook estará listo para usar PySpark. Se ha dejado un archivo de prueba llamado `pyspark_test.ipynb` para que verifiques que todo funciona correctamente.
 
-   ![SELECCIONAR KERNEL](https://i.imgur.com/wv9Cm34.png)
-   ![SERVIDOR JUPYTER](https://i.imgur.com/bbNr4JD.png)
-   ![SERVIDOR URL](https://i.imgur.com/bxUfTR5.png)
-   ![INGRESAR NOMBRE](https://i.imgur.com/cctOIzh.png)
-   ![SELECCION KERNEL](https://i.imgur.com/S3XE0aV.png)
-   ![KERNEL ACTUALIZADO](https://i.imgur.com/8U0Jdbt.png)
+3. Alternativamente, puedes acceder a JupyterLab directamente desde tu navegador con la URL obtenida en el paso 1.
 
-3. Alternativamente, puedes acceder a JupyterLab directamente desde tu navegador web con la URL obtenida en el paso 1
 ---
 
-## 🗄️ Conexión a Bases de Datos (Postgres / SQL Server)
+## 🗄️ Conexión a Bases de Datos (Postgres / SQL Server / MySQL / Oracle)
 
-Las claves de conexión a las bases de datos de SQL Server y PostgreSQL están configuradas por defecto en el archivo de `docker-compose.yml`, por lo que no es necesario modificarlas a menos que desees personalizarlas.
+Las claves de conexión están configuradas por defecto en el archivo `docker-compose.yml`.
 
 - **SQL Server**
-   - SA_PASSWORD: Password123!
+  - Usuario: `sa`
+  - Password: `initops2025!`
+  - Puerto: `1433`
 
 - **PostgreSQL**
-   - POSTGRES_PASSWORD: password
+  - Usuario: `user`
+  - Password: `initops2025!`
+  - Base de datos: `testdb`
+  - Puerto: `5432`
+
+- **MySQL**
+  - Usuario: `user`
+  - Password: `initops2025!`
+  - Root Password: `initops2025!`
+  - Base de datos: `testdb`
+  - Puerto: `3306`
+
+- **Oracle Free (23c)**
+  - Usuario administrador: `SYSTEM`
+  - Password: `initops2025!`
+  - Usuario de aplicación (por defecto): `my_user`
+  - Password de aplicación: `initops2025!`
+  - **Service Name:** `FREEPDB1`  ← ⚠️ *ya no se usa el SID `XE`*
+  - Puerto: `1521`
 
 ### 🔹 Ejemplo: Conexión a SQL Server
 ![CONEXION SQL SERVER](https://i.imgur.com/gGlIctq.png)
@@ -94,7 +108,6 @@ Las claves de conexión a las bases de datos de SQL Server y PostgreSQL están c
 ## 🛑 Detener el entorno
 
 Para detener los contenedores:
-
 ```bash
 docker compose down
 ```
