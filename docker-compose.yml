@@ -54,8 +54,6 @@ services:
     ports:
       - "1521:1521"
       - "5500:5500"
-    volumes:
-      - oradata:/opt/oracle/oradata
     command: >
       bash -c "
       echo '🔧 Creando init.sql temporal...';
@@ -72,6 +70,11 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
+      start_period: 5s
+      start_interval: 5s
+    volumes:
+      - oradata:/opt/oracle/oradata
+      - my-init.sql:/container-entrypoint-initdb.d/my-init.sql:ro
 
 volumes:
   pgdata:
